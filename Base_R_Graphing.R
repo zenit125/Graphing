@@ -2,3 +2,37 @@
 plot.circle=function(center=c("x"=0,"y"=0), radius=1){
 theta = seq(0, 2 * pi, length = 200) # angles for drawing points around the circle
 lines(x = radius * cos(theta) + center[["x"]], y = radius * sin(theta) + center[["y"]]) }
+
+
+#curly bracket function
+#from stackoverflow: https://stackoverflow.com/questions/6178763/how-to-add-braces-to-a-graph
+# Function to create curly braces
+# x, y position where to put the braces
+# range is the widht
+# position: 1 vertical, 2 horizontal
+# direction: 1 left/down, 2 right/up
+CurlyBraces <- function(x, y, range, pos = 1, direction = 1, col="black" ) {
+
+    a=c(1,2,3,48,50)    # set flexion point for spline
+    b=c(0,.2,.28,.7,.8) # set depth for spline flexion point
+
+    curve = spline(a, b, n = 50, method = "natural")$y / 2 
+
+    curve = c(curve,rev(curve))
+
+    a_sequence = rep(x,100)
+    b_sequence = seq(y-range/2,y+range/2,length=100)  
+
+    # direction
+    if(direction==1)
+    a_sequence = a_sequence+curve
+    if(direction==2)
+    a_sequence = a_sequence-curve
+
+    # pos
+    if(pos==1)
+    lines(a_sequence,b_sequence, col=col) # vertical
+    if(pos==2)
+    lines(b_sequence,a_sequence, col=col) # horizontal
+
+    }
